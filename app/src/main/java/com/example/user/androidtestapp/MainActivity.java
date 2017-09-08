@@ -97,12 +97,15 @@ public class MainActivity extends AppCompatActivity {
             Method method = Log.class.getMethod(logType, String.class, String.class);
 
             long startTime = System.currentTimeMillis();
-            for(int i = 0; i <= number; i++) {
+            for(int i = 1; i < number; i++) {
                 method.invoke(Log.class, "TestApp", "This is a log message: " + i);
             }
             long endTime = System.currentTimeMillis();
 
-            Toast.makeText(getApplicationContext(), "Logging "+number+" messages took " + (endTime - startTime) + " Milliseconds", Toast.LENGTH_LONG).show();
+            String message = "Logging " + number + " messages took " + (endTime - startTime) + " Milliseconds";
+
+            Log.i("TestApp", message);
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
         } catch(Exception e) {
             Log.e("TestApp", "Exception:", e);
         }
