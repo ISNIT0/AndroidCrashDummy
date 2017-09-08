@@ -19,10 +19,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Log.i("TestApp", "Startup... Device info: Device:[" + Build.DEVICE
-                + "] Model:[" + Build.MODEL
-                + "] Manufacturer:[" + Build.MANUFACTURER
-                + "] Time:[" + Build.TIME
-                + "] Android Version:[" + Build.VERSION.RELEASE
+                + "],Model:[" + Build.MODEL
+                + "],Manufacturer:[" + Build.MANUFACTURER
+                + "],Time:[" + Build.TIME
+                + "],Android Version:[" + Build.VERSION.RELEASE
                 + "]");
 
         Button throwButton = (Button) findViewById(R.id.throwButton);
