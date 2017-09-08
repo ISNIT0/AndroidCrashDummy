@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Android Test App</string>
+
+    <string-array name="log_types">
+        <item>Error</item>
+        <item>Debug</item>
+        <item>Info</item>
+        <item>Verbose</item>
+        <item>Warning</item>
+    </string-array>
+</resources>
