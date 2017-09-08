@@ -18,13 +18,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.i("TestApp", "Startup... Device info:" +
-               "\nDevice: " + Build.DEVICE +
-                "\nModel: " + Build.MODEL +
-                "\nManufacturer: " + Build.MANUFACTURER +
-                "\nTime: " + Build.TIME +
-                "\nAndroid Version: " + Build.VERSION.RELEASE +
-                "");
+        Log.i("TestApp", "Startup... Device info: Device:[" + Build.DEVICE
+                + "] Model:[" + Build.MODEL
+                + "] Manufacturer:[" + Build.MANUFACTURER
+                + "] Time:[" + Build.TIME
+                + "] Android Version:[" + Build.VERSION.RELEASE
+                + "]");
 
         Button throwButton = (Button) findViewById(R.id.throwButton);
         throwButton.setOnClickListener( new View.OnClickListener() {
