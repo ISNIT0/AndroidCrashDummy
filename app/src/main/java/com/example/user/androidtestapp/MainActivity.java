@@ -1,5 +1,6 @@
 package com.example.user.androidtestapp;
 
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,7 +10,13 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,6 +52,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button httpGetButton = (Button) findViewById(R.id.httpGet);
+        httpGetButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Exceptional App", "HTTP Get button clicked, triggering httpGet()");
+
+                AsyncTask.execute(new Runnable() {
+                    public void run() {
+                        try {
+                            String res = httpGet();
+                            Log.i("Exceptional App", "Successfully run httpGet(). response.length = [" + res.length() + "]");
+                        } catch(IOException err) {
+                            Log.e("Exceptional App", "Error in httpGet()", err);
+                        }
+                    }
+                });
+
+            }
+        });
         //Logging
         final Spinner logTypeSpinner = (Spinner) findViewById(R.id.spinner);
     try {
@@ -108,6 +134,38 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
         } catch(Exception e) {
             Log.e("TestApp", "Exception:", e);
+        }
+    }
+
+    private String httpGet() throws IOException{
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new LoggingInterceptor())
+                .build();
+
+        Request request = new Request.Builder()
+                .url("http://www.publicobject.com/helloworld.txt")
+                .header("User-Agent", "OkHttp Example")
+                .build();
+
+        Response response = client.newCall(request).execute();
+        return response.body().string();
+    }
+
+    class LoggingInterceptor implements Interceptor {
+        @Override public Response intercept(Interceptor.Chain chain) throws IOException {
+            Request request = chain.request();
+
+            long t1 = System.nanoTime();
+            Log.i("OKHttp Interceptor", String.format("Sending request %s on %s%n%s",
+                    request.url(), chain.connection(), request.headers()));
+
+            Response response = chain.proceed(request);
+
+            long t2 = System.nanoTime();
+            Log.i("OKHttp Interceptor", String.format("Received response for %s in %.1fms%n%s",
+                    response.request().url(), (t2 - t1) / 1e6d, response.headers()));
+
+            return response;
         }
     }
 }
