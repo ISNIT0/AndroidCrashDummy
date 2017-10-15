@@ -33,9 +33,11 @@ public class LogTest {
     @Test
     public void clickLog100Button() throws Exception {
 
-        clearLog();
-        onView(withId(R.id.log100)).perform(click());
-        String log = getLogs();
+        clearLog(); // Otherwise our logcat command could show previous test-runs etc.
+        onView(withId(R.id.log100)).perform(click()); // UI Action / Trigger logs
+        String log = getLogs(); // Get all logs in logcat buffer for this app (could have logs from parallel executions, not just the line above)
+
+        Log.d("LogTest", "Output from log reading has length: [" + log.length() + "]");
 
         Pattern mPattern = Pattern.compile("Logging 100 messages took [0-9]+ Milliseconds");
 
@@ -45,8 +47,6 @@ public class LogTest {
         } else {
             Log.i("LogTest", "ClickLog100Button Passed");
         }
-
-        //Log.d("Logging", "Output from log reading has length: [" + log.length() + "]");
     }
 
 
