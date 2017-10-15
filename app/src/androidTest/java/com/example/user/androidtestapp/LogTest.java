@@ -35,54 +35,23 @@ public class LogTest {
 
     @Test
     public void clickLog100Button() throws Exception {
-        String permission = "android.permission.WRITE_EXTERNAL_STORAGE";
-        int res = mActivityRule.getActivity().getApplicationContext().checkCallingOrSelfPermission(permission);
-        if (res != PackageManager.PERMISSION_GRANTED) {
-            throw new Exception("App does not have permission [android.permission.READ_LOGS]");
-        }
-
+        ensureHasPermission("android.permission.READ_LOGS");
         LogAssert logAssert = new LogAssert() {
             @Override
             public void customHandler(String logs) throws Exception {
-                Log.d("LogAssert", "Custom Log Handler");
+                throw new Exception("Not Implemented, logsString has length: [" + logs.length() + "]");
             }
         };
 
         onView(withId(R.id.log100)).perform(click()); // UI Action / Trigger logs
 
-        //Log.d("LogTest", "Output from log reading has length: [" + log.length() + "]");
-
-        String[] assertArr = {"Logging 100 messages took [0-9]+ Milliseconds"};
-        logAssert.assertLogsExist(assertArr);
         logAssert.assertLogsCustom();
     }
 
-
-    public void clearLog(){
-        try {
-            Process process = new ProcessBuilder()
-                    .command("logcat", "-c")
-                    .redirectErrorStream(true)
-                    .start();
-        } catch (IOException e) {
+    private void ensureHasPermission(String permission) throws Exception {
+        int res = mActivityRule.getActivity().getApplicationContext().checkCallingOrSelfPermission(permission);
+        if (res != PackageManager.PERMISSION_GRANTED) {
+            throw new Exception("App requires, but does not have permission [" + permission + "]");
         }
-    }
-
-    public String getLogs(){
-        Process logcat;
-        final StringBuilder log = new StringBuilder();
-        try {
-            logcat = Runtime.getRuntime().exec(new String[]{"logcat", "-d"});
-            BufferedReader br = new BufferedReader(new InputStreamReader(logcat.getInputStream()),4*1024);
-            String line;
-            String separator = System.getProperty("line.separator");
-            while ((line = br.readLine()) != null) {
-                log.append(line);
-                log.append(separator);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return log.toString();
     }
 }
