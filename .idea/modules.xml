@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/AndroidCrashDummy.iml" filepath="$PROJECT_DIR$/AndroidCrashDummy.iml" />
       <module fileurl="file://$PROJECT_DIR$/AndroidTestApp.iml" filepath="$PROJECT_DIR$/AndroidTestApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/logassert/logassert.iml" filepath="$PROJECT_DIR$/logassert/logassert.iml" />
       <module fileurl="file://$PROJECT_DIR$/logassert/logassert.iml" filepath="$PROJECT_DIR$/logassert/logassert.iml" />
     </modules>
   </component>
