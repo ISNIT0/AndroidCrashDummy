@@ -25,14 +25,33 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        Log.i("TestApp", "Startup... Device info: Device:[" + Build.DEVICE
+        final String deviceInfo = "==Device:[" + Build.DEVICE
                 + "], Model:[" + Build.MODEL
                 + "], Manufacturer:[" + Build.MANUFACTURER
                 + "], Time:[" + Build.TIME
                 + "], Android Version:[" + Build.VERSION.RELEASE
-                + "]");
+                + "]==";
+
+        final Thread.UncaughtExceptionHandler systemHandler = Thread.getDefaultUncaughtExceptionHandler();
+
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread t, Throwable e) {
+                StackTraceElement[] trace = e.getStackTrace();
+                StackTraceElement[] newTrace = new StackTraceElement[trace.length + 1];
+                System.arraycopy(trace, 0, newTrace, 1, trace.length);
+                newTrace[0] = new StackTraceElement("==Device Info==",
+                        deviceInfo,
+                        "", -3);
+                e.setStackTrace(newTrace);
+
+                systemHandler.uncaughtException(t, e);
+            }
+        });
+
+        setContentView(R.layout.activity_main);
+
+        Log.i("TestApp", "Startup... Device info: " + deviceInfo);
 
         Button throwButton = (Button) findViewById(R.id.throwButton);
         throwButton.setOnClickListener( new View.OnClickListener() {
@@ -75,38 +94,38 @@ public class MainActivity extends AppCompatActivity {
         });
         //Logging
         final Spinner logTypeSpinner = (Spinner) findViewById(R.id.spinner);
-    try {
-        Button log100 = (Button) findViewById(R.id.log100);
-        log100.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                log(100, logTypeSpinner);
-            }
-        });
-        Button log1000 = (Button) findViewById(R.id.log1000);
-        log1000.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                log(1000, logTypeSpinner);
-            }
-        });
-        Button log10000 = (Button) findViewById(R.id.log10000);
-        log10000.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                log(10000, logTypeSpinner);
-            }
-        });
-        Button log100000 = (Button) findViewById(R.id.log100000);
-        log100000.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                log(100000, logTypeSpinner);
-            }
-        });
-    }catch (Exception e) {
-        e.printStackTrace();
-    }
+        try {
+            Button log100 = (Button) findViewById(R.id.log100);
+            log100.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    log(100, logTypeSpinner);
+                }
+            });
+            Button log1000 = (Button) findViewById(R.id.log1000);
+            log1000.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    log(1000, logTypeSpinner);
+                }
+            });
+            Button log10000 = (Button) findViewById(R.id.log10000);
+            log10000.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    log(10000, logTypeSpinner);
+                }
+            });
+            Button log100000 = (Button) findViewById(R.id.log100000);
+            log100000.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    log(100000, logTypeSpinner);
+                }
+            });
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
